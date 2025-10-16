@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import logoMC from '../assets/logoMC.png'
 
 export default function Splash({ onEnter }) {
   return (
@@ -14,7 +15,7 @@ export default function Splash({ onEnter }) {
         whileTap={{ scale: 0.98 }}
         aria-label="Enter celebration"
       >
-        <img src="/src/assets/logoMC.png" alt="MC Logo" className="h-40 w-40 object-contain drop-shadow-xl" />
+        <img src={logoMC} alt="MC Logo" className="h-40 w-40 object-contain drop-shadow-xl" />
       </motion.button>
     </div>
   )

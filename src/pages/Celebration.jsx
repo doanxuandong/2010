@@ -1,41 +1,58 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
+import giftImg from '../assets/gift.png'
 
 export default function Celebration() {
   useEffect(() => {
-    const defaults = { spread: 75, ticks: 70, gravity: 0.9 }
-    confetti({ ...defaults, particleCount: 90, origin: { y: 0.6 } })
-    setTimeout(() => confetti({ ...defaults, particleCount: 60, origin: { y: 0.5 } }), 250)
-    setTimeout(() => confetti({ ...defaults, particleCount: 40, origin: { y: 0.7 } }), 500)
+    const randomInRange = (min, max) => Math.random() * (max - min) + min
+    const defaults = { spread: 60, startVelocity: 55, ticks: 110, gravity: 0.9, scalar: 1, zIndex: 0 }
+
+    const shoot = () => {
+      // Bắn từ hai phía dưới màn hình lên trên
+      confetti({
+        ...defaults,
+        particleCount: 60,
+        angle: 90,
+        origin: { x: randomInRange(0.1, 0.3), y: 1 },
+      })
+      confetti({
+        ...defaults,
+        particleCount: 60,
+        angle: 90,
+        origin: { x: randomInRange(0.7, 0.9), y: 1 },
+      })
+    }
+
+    // Bắn ngay khi vào và sau đó lặp lại liên tục
+    shoot()
+    const intervalId = setInterval(shoot, 900)
+    return () => clearInterval(intervalId)
   }, [])
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#1b0f3b] via-[#2a1569] to-[#3a1f8f] px-2 text-center">
+    <div className="flex min-h-screen flex-col items-center justify-center px-2 text-center" style={{ background: 'linear-gradient(135deg,#FFD6E0 0%,#FFF2CC 50%,#FFE5EC 100%)' }}>
       <motion.img
-        src="/src/assets/gift.png"
+        src={giftImg}
         alt="Gift"
-        className="h-80 w-80 sm:h-96 sm:w-96 md:h-96 md:w-96 object-contain drop-shadow-2xl"
+        className="h-96 w-96 sm:h-[28rem] sm:w-[28rem] md:h-[32rem] md:w-[32rem] object-contain drop-shadow-2xl"
         initial={{ y: 20, opacity: 0, scale: 0.9 }}
         animate={{ y: 0, opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
       />
-      <motion.h1
-        className="text-3xl font-bold tracking-wide text-rose-200 sm:text-4xl"
-        initial={{ opacity: 0, y: 8 }}
+      <motion.div
+        className="mt-6 rounded-xl bg-white/55 px-5 py-4 backdrop-blur-sm shadow-lg"
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.6 }}
+        transition={{ delay: 0.25, duration: 0.5 }}
       >
-        Happy Women's Day
-      </motion.h1>
-      <motion.p
-        className="mt-3 max-w-xl text-base text-rose-100/90 sm:text-lg"
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6, duration: 0.6 }}
-      >
-        Thank you for being part of this beautiful 25-year journey with us.
-      </motion.p>
+        <h1 className="text-3xl font-bold tracking-wide text-rose-700 sm:text-4xl">
+          Happy Women's Day
+        </h1>
+        <p className="mt-2 max-w-xl text-base text-rose-800/90 sm:text-lg">
+          Thank you for being part of this beautiful <br></br> 25-year journey with us.
+        </p>
+      </motion.div>
     </div>
   )
 }
